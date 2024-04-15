@@ -6,6 +6,6 @@
 		<route-files value="test4.rou.xml" />
 	</input>
 	<output>
-		<statistic-output value="test4.statistic.output.xml" />
+		<statistic-output value="/xml_data/test4/test4.statistic.output.xml" />
 	</output>
 </configuration>
