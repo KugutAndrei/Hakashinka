@@ -3,5 +3,5 @@
 	<!--VTypes-->
 	<vType id="id0" accel="3.0" decel="6.0" length="4.0" minGap="4" maxSpeed="50.0" sigma="0.5" />
 	<!--Flows-->
-	<flow id="id0" from="E0" to="E3" begin="0" end="100" number="300" departSpeed="13.89" arrivalSpeed="13.89" departLane="random" />
+	<flow id="id0" from="E0" type="id0" to="E3" begin="0" end="100" number="30000" departSpeed="13.89" arrivalSpeed="13.89" departLane="random" />
 </routes>

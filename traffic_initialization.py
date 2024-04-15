@@ -1,6 +1,7 @@
 import os
 import numpy as np
 import sys
+import subprocess
 from xml.etree.ElementTree import Element, SubElement, ElementTree, tostring, XML, Comment, indent
 import xml.etree.ElementTree as ET
 
@@ -11,8 +12,12 @@ def loadNet(filename):
 def loadRoute(filename):
     os.system('sumo -r ' + filename)
     
-def loadConfig(filename):
-    os.system('sumo -c ' + filename)
+def loadConfig(filename, shell=False):
+    sumo_process = subprocess.run(
+        ['sumo', '-c', filename],
+        check=False,
+        shell=shell
+    )
 
 
 def generateConfigFile(
