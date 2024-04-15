@@ -81,6 +81,7 @@ class RouteFile:
         self.flows[len(self.flows)] = {
             'id' : vtype,
             'from' : source,
+            'type' : vtype,
             'to' : dest,
             'begin' : "0",
             'end' : str(int(dur)),
