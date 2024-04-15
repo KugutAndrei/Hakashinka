@@ -7,6 +7,5 @@
 	</input>
 	<output>
 		<statistic-output value="test1.statistic.output.xml" />
-		<tripinfo-output value="test1.tripinfo.output.xml" />
 	</output>
 </configuration>
