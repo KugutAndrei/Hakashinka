@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
+	<!--VTypes-->
+	<vType id="id0" accel="3.0" decel="6.0" length="4.0" minGap="3.4" maxSpeed="50.0" sigma="0" />
+	<vType id="id1" accel="3.0" decel="6.0" length="4.0" minGap="3.4" maxSpeed="50.0" sigma="0" />
+	<vType id="id2" accel="3.0" decel="6.0" length="4.0" minGap="3.4" maxSpeed="50.0" sigma="0" />
+	<!--Flows-->
+	<flow id="id0" from="E0" type="id0" to="E4" begin="0" end="100" number="250" departSpeed="13.0" arrivalSpeed="13.0" departLane="random" />
+	<flow id="id1" from="E0" type="id1" to="E12" begin="0" end="100" number="250" departSpeed="13.0" arrivalSpeed="13.0" departLane="random" />
+	<flow id="id2" from="E0" type="id2" to="E14" begin="0" end="100" number="250" departSpeed="13.0" arrivalSpeed="13.0" departLane="random" />
+</routes>
