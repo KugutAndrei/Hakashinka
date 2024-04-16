@@ -63,9 +63,7 @@ class OptimalDist():
         self.reg = GradientBoostingRegressor(n_estimators=n_estimators, max_depth=max_depth)
         self.reg.fit(X, y)
         self.hasFit = True
-        print(X)
-        print(y)
-        return self.reg
+        # return self.regы
 
     def predict(self, n_cars:int | np.ndarray) -> float | np.ndarray:
         """
