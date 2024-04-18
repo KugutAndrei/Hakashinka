@@ -5,6 +5,7 @@ import subprocess
 from xml.etree.ElementTree import Element, SubElement, ElementTree, tostring, XML, Comment, indent
 import xml.etree.ElementTree as ET
 
+flag = (os.name=='posix')
 
 def loadNet(filename):
     os.system('sumo -n ' + filename)
@@ -27,7 +28,11 @@ def generateConfigFile(
     output=['fcd', 'statistic', 'tripinfo', 'summary'],
     time=None
 ):
-    name = config_filename.split('.')[-2].split('\\')[-1]
+    
+    if(flag):
+        name = config_filename.split('.')[-2].split('/')[-1]
+    else:
+        name = config_filename.split('.')[-2].split('\\')[-1]
     
     top = Element('configuration', {
         'xmlns:xsi' : 'http://www.w3.org/2001/XMLSchema-instance',
@@ -124,8 +129,19 @@ def readOutputFile(filename):
     filetype = filename.split('.')[-3]
     root = ET.parse(filename).getroot()
     
-    if filetype == 'statistic':
-        node = root.find('.//vehicleTripStatistics')
+    if(flag):
+        
+        if filetype == 'statistic':
+            node = root.find('./vehicleTripStatistics')
+        if node is not None:
+            return node.attrib
+        else:
+            node = root.find('./performance')
+            return node.attrib
+    else:    
+        
+        if filetype == 'statistic':
+            node = root.find('.//vehicleTripStatistics')
         if node is not None:
             return node.attrib
         else:
