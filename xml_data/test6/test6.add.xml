@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
 	<!--VTypes-->
-	<vType id="id1" accel="3.0" decel="6.0" length="4.0" minGap="1" maxSpeed="20.0" sigma="0.7" />
-	<vType id="id2" accel="3.0" decel="6.0" length="4.0" minGap="1" maxSpeed="20" sigma="0.7" />
-	<vType id="id3" accel="3.0" decel="6.0" length="4.0" minGap="1" maxSpeed="20" sigma="0.7" />
-	<vType id="id4" accel="3.0" decel="6.0" length="4.0" minGap="1" maxSpeed="20" sigma="0.7" />
+	<vType id="id1" accel="3.0" decel="6.0" length="4.0" minGap="3.3684210526315788" maxSpeed="20.0" sigma="0.7" />
+	<vType id="id2" accel="3.0" decel="6.0" length="4.0" minGap="3.3684210526315788" maxSpeed="20" sigma="0.7" />
+	<vType id="id3" accel="3.0" decel="6.0" length="4.0" minGap="6.7368421052631575" maxSpeed="20" sigma="0.7" />
+	<vType id="id4" accel="3.0" decel="6.0" length="4.0" minGap="6.7368421052631575" maxSpeed="20" sigma="0.7" />
 	<vType id="id5" accel="3.0" decel="6.0" length="4.0" minGap="0.1" maxSpeed="20.0" sigma="0.5" />
-	<vType id="idF" accel="3.0" decel="6.0" length="4.0" minGap="3" maxSpeed="20.0" sigma="0" />
+	<vType id="idF" accel="3.0" decel="6.0" length="4.0" minGap="5" maxSpeed="20.0" sigma="0" />
 	<!--Calibrators-->
 	<calibrator id="cal0" edge="E1" pos="0" lane="E1_0">
 		<flow begin="0" end="10000" type="id1" />
@@ -18,7 +18,7 @@
 		<flow begin="0" end="10000" type="id3" />
 	</calibrator>
 	<calibrator id="cal4" edge="E1" pos="0" lane="E1_3">
-		<flow begin="0" end="10000" type="id3" />
+		<flow begin="0" end="10000" type="id4" />
 	</calibrator>
 	<calibrator id="cal5" edge="E2" pos="0" lane="E2_0">
 		<flow begin="0" end="10000" type="id5" />
