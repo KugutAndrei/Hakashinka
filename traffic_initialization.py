@@ -144,7 +144,8 @@ class AditionalFile:
         self.calibrs[ID] = {
             'id' : str(ID),
             'edge' : edge,
-            'pos' : "0"
+            'pos' : "0",
+            'lane' : str(edge)+'_'+str(line)
         }
         
     def setVehicleFlow(self, calID, vtype, dur):

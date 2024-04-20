@@ -3,10 +3,10 @@
 	<!--VTypes-->
 	<vType id="id1" accel="3.0" decel="6.0" length="4.0" minGap="5" maxSpeed="50.0" sigma="0.5" />
 	<!--Calibrators-->
-	<calibrator id="cal0" edge="E2" pos="0">
+	<calibrator id="cal0" edge="E2" pos="0" lane="E2_0">
 		<flow begin="0" end="1800" type="id1" />
 	</calibrator>
-	<calibrator id="cal1" edge="E2" pos="0">
+	<calibrator id="cal1" edge="E2" pos="0" lane="E2_1">
 		<flow begin="0" end="1800" type="id1" />
 	</calibrator>
 </additional>
