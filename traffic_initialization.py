@@ -8,14 +8,14 @@ import xml.etree.ElementTree as ET
 flag = (os.name=='posix')
 
 def loadNet(filename):
-    os.system('sumo -n ' + filename)
+    os.system(f'sumo -n {filename} --no-step-log -W --duration-log.disable')
 
 def loadRoute(filename):
-    os.system('sumo -r ' + filename)
+    os.system(f'sumo -r {filename} --no-step-log -W --duration-log.disable')
     
 def loadConfig(filename, shell=False):
     sumo_process = subprocess.run(
-        ['sumo', '-c', filename],
+        ['sumo', '-c', filename, '--no-step-log', '-', '--duration-log.disable'],
         check=False,
         shell=shell
     )
@@ -138,7 +138,7 @@ class AditionalFile:
         self.flows = dict()
         
     def setVehicleType(self, ID, params):
-        self.vTypes[ID] = params
+        self.vTypes[ID] = params.copy()
         
     def setCalibrator(self, ID, edge, line):
         self.calibrs[ID] = {
