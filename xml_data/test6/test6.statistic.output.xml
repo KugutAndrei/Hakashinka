@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2024-04-21 01:31:32 by Eclipse SUMO sumo Version 1.19.0
+<!-- generated on 2024-04-22 00:05:25 by Eclipse SUMO sumo Version 1.19.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -13,14 +13,20 @@
         <statistic-output value="./xml_data/test6/test6.statistic.output.xml"/>
     </output>
 
+    <report>
+        <no-warnings value="true"/>
+        <duration-log.disable value="true"/>
+        <no-step-log value="true"/>
+    </report>
+
 </configuration>
 -->
 
 <statistics xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/statistic_file.xsd">
-    <performance clockBegin="1713652292.03" clockEnd="1713652298.01" clockDuration="5.98" traciDuration="0.00" realTimeFactor="772.67" vehicleUpdatesPerSecond="60429.07" personUpdatesPerSecond="0.00" begin="0.00" end="4619.00" duration="4619.00"/>
-    <vehicles loaded="5000" inserted="5000" running="0" waiting="0"/>
-    <teleports total="55" jam="0" yield="0" wrongLane="0"/>
-    <safety collisions="55" emergencyStops="0" emergencyBraking="0"/>
+    <performance clockBegin="1713733525.29" clockEnd="1713733534.88" clockDuration="9.60" traciDuration="0.00" realTimeFactor="640.62" vehicleUpdatesPerSecond="0.00" personUpdatesPerSecond="0.00" begin="0.00" end="6148.00" duration="6148.00"/>
+    <vehicles loaded="8000" inserted="8000" running="0" waiting="0"/>
+    <teleports total="3169" jam="0" yield="0" wrongLane="0"/>
+    <safety collisions="3169" emergencyStops="0" emergencyBraking="56"/>
     <persons loaded="0" running="0" jammed="0"/>
     <personTeleports total="0" abortWait="0" wrongDest="0"/>
 </statistics>
