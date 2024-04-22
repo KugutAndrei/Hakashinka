@@ -74,12 +74,12 @@ class Simulation:
                                     'maxSpeed' : str(default_speed),
                                     'sigma' : "0.7"}
 
-        # setting flow with default lib function
+        # setting flow with default function
         self.set_flow(start_road, end_road, N, dur, sim_speed)
 
     def set_flow(self, start_road, end_road, N, dur, sim_speed):
-        # servatory metod
-        self.rtFl.setVehicleType('default', self.default_vtype_dict)
+        # auxilary metod
+        self.rtFl.setVehicleType('default', self.default_vtype_dict.copy())
         if type(end_road) == str:
             end_road = [end_road]
         if type(start_road) == str:
@@ -156,7 +156,7 @@ class Simulation:
             raise Exception("Undefined lane type!")
 
     def generate_config(self):
-        # servatory metod
+        # auxilary metod
         try:
             self.rtFl.save()
             self.addFl.save()
