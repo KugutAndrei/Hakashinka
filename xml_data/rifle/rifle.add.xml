@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+	<!--VTypes-->
+	<vType id="vtype_gap_3_speed_20" accel="3.0" decel="6.0" length="4.0" minGap="3" maxSpeed="20" sigma="0.5" />
+	<vType id="vtype_gap_2_speed_20" accel="3.0" decel="6.0" length="4.0" minGap="2" maxSpeed="20" sigma="0.5" />
+	<vType id="vtype_gap_40.0_speed_20" accel="3.0" decel="6.0" length="4.0" minGap="40.0" maxSpeed="20" sigma="0.5" />
+	<vType id="vtype_gap_1_speed_20" accel="3.0" decel="6.0" length="4.0" minGap="1" maxSpeed="20" sigma="0.5" />
+	<!--Calibrators-->
+	<calibrator id="calib_gap_3_speed_20_road_E0_lane0" edge="E0" pos="0" lane="E0_0">
+		<flow begin="0" end="999999" type="vtype_gap_3_speed_20" />
+	</calibrator>
+	<calibrator id="calib_gap_3_speed_20_road_E0_lane1" edge="E0" pos="0" lane="E0_1">
+		<flow begin="0" end="999999" type="vtype_gap_3_speed_20" />
+	</calibrator>
+	<calibrator id="calib_gap_3_speed_20_road_E0_lane2" edge="E0" pos="0" lane="E0_2">
+		<flow begin="0" end="999999" type="vtype_gap_3_speed_20" />
+	</calibrator>
+	<calibrator id="calib_gap_3_speed_20_road_E0_lane3" edge="E0" pos="0" lane="E0_3">
+		<flow begin="0" end="999999" type="vtype_gap_3_speed_20" />
+	</calibrator>
+	<calibrator id="calib_gap_2_speed_20_road_E2_lane2" edge="E2" pos="0" lane="E2_2">
+		<flow begin="0" end="999999" type="vtype_gap_2_speed_20" />
+	</calibrator>
+	<calibrator id="calib_gap_2_speed_20_road_E2_lane3" edge="E2" pos="0" lane="E2_3">
+		<flow begin="0" end="999999" type="vtype_gap_2_speed_20" />
+	</calibrator>
+	<calibrator id="calib_gap_40.0_speed_20_road_E2_lane0" edge="E2" pos="0" lane="E2_0">
+		<flow begin="0" end="999999" type="vtype_gap_40.0_speed_20" />
+	</calibrator>
+	<calibrator id="calib_gap_40.0_speed_20_road_E2_lane1" edge="E2" pos="0" lane="E2_1">
+		<flow begin="0" end="999999" type="vtype_gap_40.0_speed_20" />
+	</calibrator>
+	<calibrator id="calib_gap_40.0_speed_20_road_E3_lane0" edge="E3" pos="0" lane="E3_0">
+		<flow begin="0" end="999999" type="vtype_gap_40.0_speed_20" />
+	</calibrator>
+	<calibrator id="calib_gap_40.0_speed_20_road_E3_lane1" edge="E3" pos="0" lane="E3_1">
+		<flow begin="0" end="999999" type="vtype_gap_40.0_speed_20" />
+	</calibrator>
+	<calibrator id="calib_gap_1_speed_20_road_E4_lane0" edge="E4" pos="0" lane="E4_0">
+		<flow begin="0" end="999999" type="vtype_gap_1_speed_20" />
+	</calibrator>
+	<calibrator id="calib_gap_1_speed_20_road_E4_lane1" edge="E4" pos="0" lane="E4_1">
+		<flow begin="0" end="999999" type="vtype_gap_1_speed_20" />
+	</calibrator>
+</additional>
