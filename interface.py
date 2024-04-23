@@ -126,7 +126,7 @@ class Simulation:
             else:
                 raise Exception('Invalid road id!')
 
-            vtype_dict = self.default_vtype_dict
+            vtype_dict = self.default_vtype_dict.copy()
             vtype_dict['minGap'] = str(gap)
             vtype_dict['maxSpeed'] = str(speed)
             self.addFl.setVehicleType(f'vtype_gap_{gap}_speed_{speed}', vtype_dict)
@@ -136,7 +136,7 @@ class Simulation:
 
 
         elif type(lane) is str:
-            vtype_dict = self.default_vtype_dict
+            vtype_dict = self.default_vtype_dict.copy()
             vtype_dict['minGap'] = str(gap)
             vtype_dict['maxSpeed'] = str(speed)
             self.addFl.setVehicleType(f'vtype_gap_{gap}_speed_{speed}', vtype_dict)
@@ -144,7 +144,7 @@ class Simulation:
             self.addFl.setVehicleFlow(f'calib_gap_{gap}_speed_{speed}_road_{road}_lane{lane}', f'vtype_gap_{gap}_speed_{speed}', "999999")
 
         elif type(lane) is list:
-            vtype_dict = self.default_vtype_dict
+            vtype_dict = self.default_vtype_dict.copy()
             vtype_dict['minGap'] = str(gap)
             vtype_dict['maxSpeed'] = str(speed)
             self.addFl.setVehicleType(f'vtype_gap_{gap}_speed_{speed}', vtype_dict)

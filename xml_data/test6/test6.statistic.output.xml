@@ -1,32 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2024-04-22 18:41:02 by Eclipse SUMO sumo Version 1.19.0
+<!-- generated on 2024-04-23 03:09:25 by Eclipse SUMO GUI Version 1.19.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="./xml_data/test6/test6.net.xml"/>
-        <route-files value="./xml_data/test6/test6.rou.xml"/>
-        <additional-files value="./xml_data/test6/test6.add.xml"/>
+        <net-file value="test6.net.xml"/>
+        <route-files value="test6.rou.xml"/>
+        <additional-files value="test6.add.xml"/>
     </input>
 
     <output>
-        <statistic-output value="./xml_data/test6/test6.statistic.output.xml"/>
+        <statistic-output value="test6.statistic.output.xml"/>
     </output>
-
-    <report>
-        <no-warnings value="true"/>
-        <duration-log.disable value="true"/>
-        <no-step-log value="true"/>
-    </report>
 
 </configuration>
 -->
 
 <statistics xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/statistic_file.xsd">
-    <performance clockBegin="1713800462.13" clockEnd="1713800465.17" clockDuration="3.04" traciDuration="0.00" realTimeFactor="1017.42" vehicleUpdatesPerSecond="0.00" personUpdatesPerSecond="0.00" begin="0.00" end="3095.00" duration="3095.00"/>
-    <vehicles loaded="4000" inserted="4000" running="0" waiting="0"/>
-    <teleports total="1229" jam="0" yield="0" wrongLane="0"/>
-    <safety collisions="1229" emergencyStops="0" emergencyBraking="32"/>
+    <performance clockBegin="1713830965.97" clockEnd="1713831197.64" clockDuration="231.67" traciDuration="1.18" realTimeFactor="6.13" vehicleUpdatesPerSecond="514.37" personUpdatesPerSecond="0.00" begin="0.00" end="1420.00" duration="1420.00"/>
+    <vehicles loaded="5000" inserted="1757" running="78" waiting="3243"/>
+    <teleports total="546" jam="0" yield="0" wrongLane="0"/>
+    <safety collisions="546" emergencyStops="0" emergencyBraking="20"/>
     <persons loaded="0" running="0" jammed="0"/>
     <personTeleports total="0" abortWait="0" wrongDest="0"/>
 </statistics>
