@@ -15,7 +15,7 @@ def loadRoute(filename):
     
 def loadConfig(filename, shell=False):
     sumo_process = subprocess.run(
-        ['sumo', '-c', filename, '--no-step-log', '-W', '--duration-log.disable'],
+        ['sumo', '-c', filename, '--no-step-log', '-W', '--duration-log.disable', '--random'],
         check=False,
         shell=shell
     )
