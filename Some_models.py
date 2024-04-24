@@ -38,7 +38,7 @@ class OptimalDist():
         self.target = ['d0', 'd1', 'd2']
         self.feature = ['N']
         self.cars = grid_params[0]
-        self.dist = grid_params[1:-1]
+        self.dist = grid_params[1:]
 
     # def __init__(self, n_estimators:int = 100, max_depth: int = 3):
     #     self.n_estimators = n_estimators
@@ -237,6 +237,22 @@ class OptimalNN():
         pred = list(map(lambda x: x.numpy()[0], tf.unstack(self.model(tf_n), axis=1)))
         return pred
 
+
+class SimpleNN():
+    def fit(self, X:pd.DataFrame, Y:pd.DataFrame, n_hidden_layers: int = 2) -> None:
+        n_neurons = 64
+        activation_func = 'relu'
+        self.model = tf.keras.Sequential()
+        self.model.add(tf.keras.layers.Input(shape=(1,)))
+        for _ in range(n_hidden_layers):
+            self.model.add(tf.keras.layers.Dense(n_neurons, activation=activation_func))
+        self.model.add(tf.keras.layers.Dense(3))
+
+        self.model.compile(optimizer='adam', loss='mse')
+        self.model.fit(X, Y, epochs=10)
+
+    def predict(self, x):
+        return self.model.predict(x)
 
 
 def some_loss(dist, n):
