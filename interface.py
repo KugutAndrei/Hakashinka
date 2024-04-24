@@ -208,6 +208,24 @@ class Simulation:
 
         t = self.get_simtime()
         return self.N/t
+    
+    def get_safety_features(self):
+        """
+        Method to obtain the number of collisions, emergency stops and emergency braking
+
+        :return:
+            dict
+        """
+
+        with open(os.path.join(self.work_dir, self.outpufile), 'r') as file:
+            data = file.read()
+        data = BeautifulSoup(data, "xml")
+        safety = data('safety')[0]
+        return {
+            'collisions': int(safety['collisions']),
+            'emergencyStops': int(safety['emergencyStops']),
+            'emergencyBraking': int(safety['emergencyBraking'])
+        }
 
     def get_fitted_throughput(self):
         raise Exception('This feature doesnt work cause Andrey fucked it up!')
