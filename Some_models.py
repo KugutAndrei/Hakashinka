@@ -68,7 +68,7 @@ class OptimalDist():
         X = pd.DataFrame(columns=self.feature)
         Y = pd.DataFrame(columns=self.target)
 
-        for n_cars in range(*self.cars):
+        for n_cars in tqdm.tqdm(range(*self.cars)):
             max_loss = -1.0
             best_dists = []
             for g0 in np.arange(*self.dist[0]):
@@ -126,7 +126,7 @@ class OptimalLoss_Q():
             new_state = (current_state + action) % n_states
             return new_state
 
-        # Тренировка модели  
+        # Тренировка модели
         for episode in range(num_episodes):
             # В начале каждой эпохи начальные параметры
             start_state = n_states // 2
