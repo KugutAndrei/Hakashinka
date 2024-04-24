@@ -1,6 +1,7 @@
 # from abc import ABC, abstractmethod
 import numpy as np
 import pandas as pd
+from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.multioutput import MultiOutputRegressor
 import tensorflow as tf
@@ -239,7 +240,15 @@ class OptimalNN():
 
 
 class SimpleNN():
-    def fit(self, X:pd.DataFrame, Y:pd.DataFrame, n_hidden_layers: int = 2) -> None:
+    def __init__(self):
+        self.target = ['d0', 'd1', 'd2']
+        self.feature = ['N']
+
+    def fit(self, data_filename:str, n_hidden_layers: int = 2, n_epochs: int = 10) -> None:
+        data = pd.read_csv(data_filename)
+        X = data[self.feature]
+        Y = data[self.target]
+
         n_neurons = 64
         activation_func = 'relu'
         self.model = tf.keras.Sequential()
@@ -249,10 +258,57 @@ class SimpleNN():
         self.model.add(tf.keras.layers.Dense(3))
 
         self.model.compile(optimizer='adam', loss='mse')
-        self.model.fit(X, Y, epochs=10)
+        self.model.fit(X, Y, epochs=n_epochs)
 
-    def predict(self, x):
-        return self.model.predict(x)
+    def predict(self, x:int|float|list|np.ndarray):
+        val = tf.constant(x, dtype=tf.float32, shape=(len(x),))
+        return self.model.predict(val)
+
+
+class Throughput():
+    def __init__(self):
+        self.input = ['d0', 'd1', 'd2', 'N']
+        self.output = ['throughput']
+
+    def fit(self, data_filename:str, n_epochs:int = 10, test_size:float = 0.8, seed:int = 13) -> None:
+        data = pd.read_csv(data_filename)
+        input = data[self.input]
+        output = data[self.output]
+        in_train, in_test, out_train, out_test = train_test_split(input, output, test_size=test_size, random_state=seed)
+
+        # Один вход для всех четырех значений
+        input_full = tf.keras.layers.Input(shape=(4,), name='input_full')
+        # Разделение входа на три и один
+        input1 = tf.keras.layers.Lambda(lambda x: x[:, :3], output_shape=(3,))(input_full)  # Первые три значения
+        input2 = tf.keras.layers.Lambda(lambda x: x[:, 3:], output_shape=(1,))(input_full)  # Последнее значение
+        # Скрытые слои для первого входа
+        hidden1 = tf.keras.layers.Dense(30, activation='relu')(input1)
+        hidden2 = tf.keras.layers.Dense(30, activation='relu')(hidden1)
+        # Объединение второго входа с результатом обработки первого входа
+        merged = tf.keras.layers.concatenate([hidden2, input2])
+        # Общие скрытые слои
+        shared_hidden1 = tf.keras.layers.Dense(30, activation='relu')(merged)
+        shared_hidden2 = tf.keras.layers.Dense(30, activation='relu')(shared_hidden1)
+        # Выходной слой
+        output = tf.keras.layers.Dense(1)(shared_hidden2)
+        # Создание модели
+        self.model = tf.keras.models.Model(inputs=input_full, outputs=output)
+        # Компиляция модели
+        self.model.compile(optimizer='adam', loss='mse')
+
+        # Обучение модели
+        self.model.fit(in_train, out_train, epochs=n_epochs)
+
+        mse_train = self.model.evaluate(in_train, out_train)
+        mse_test = self.model.evaluate(in_test, out_test)
+        print("MSE на обучающих данных:", mse_train)
+        print("MSE на тестовых данных:", mse_test)
+
+    def predict(self, x:list) -> float:
+        val = tf.constant(x, dtype=tf.float32, shape=(1,4))
+        return self.model.predict(val)[0]
+
+
 
 
 def some_loss(dist, n):
