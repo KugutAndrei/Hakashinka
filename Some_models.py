@@ -2,6 +2,8 @@
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.multioutput import MultiOutputRegressor
+import tensorflow as tf
 
 # class LossOptimizer(ABC):
 #     """
@@ -30,40 +32,57 @@ class OptimalDist():
     """
     Бесполезный кусок говна, который просто жрет время
     """
-    def __init__(self, grid_params:any = [(0, 10, 1),
-                                      (50, 100, 50)]
-    ):
+    def __init__(self, grid_params:any = [(50, 101, 25), (0., 5., 1.), (0., 5., 1.), (0., 5., 1.)]):
         self.hasFit = False
-        self.dist = grid_params[0]
-        self.cars = grid_params[1]
+        self.hasData = False
+        self.target = ['d0', 'd1', 'd2']
+        self.feature = ['N']
+        self.cars = grid_params[0]
+        self.dist = grid_params[1:-1]
 
     # def __init__(self, n_estimators:int = 100, max_depth: int = 3):
     #     self.n_estimators = n_estimators
     #     self.max_depth = max_depth
     #     self.hasFit = False
+        
+    
+    def _fit_(self, X:pd.DataFrame, Y:pd.DataFrame, n_estimators:int, max_depth:int):
+        self.reg = MultiOutputRegressor(GradientBoostingRegressor(n_estimators=n_estimators, max_depth=max_depth))
+        self.reg.fit(X, Y)
+        self.hasFit = True
+        
 
-    def fit(self, loss_func:callable, n_estimators:int=100, max_depth:int=3) -> None:
+    def fit_data(self, data_name:str, n_estimators:int=100, max_depth:int=3) -> None:
+        data = pd.read_csv(data_name)
+        X = data[self.feature]
+        Y = data[self.target]
+        self._fit_(X, Y, n_estimators, max_depth)
+
+
+
+    def fit_func(self, func:callable, n_estimators:int=100, max_depth:int=3) -> None:
         """
         Обучает модель
         """
-        X = pd.DataFrame({"n_cars": []})
-        y = pd.Series(name="best_dist")
+        # assert ((data_name != None) or (func != None)), ('\n' + "соси жопу " * 20) * 50 + '\n'
+        X = pd.DataFrame(columns=self.feature)
+        Y = pd.DataFrame(columns=self.target)
 
         for n_cars in range(*self.cars):
             max_loss = -1.0
-            best_dist = -1.0
-            for dist in np.arange(*self.dist):
-                loss_res = loss_func(dist, n_cars)
-                if loss_res > max_loss:
-                    max_loss = loss_res
-                    best_dist = dist
-                X.loc[len(X)] = n_cars
-                y.loc[len(y)] = best_dist
+            best_dists = []
+            for g0 in np.arange(*self.dist[0]):
+                for g1 in np.arange(*self.dist[1]):
+                    for g2 in np.arange(*self.dist[2]):
+                        loss_res = func(g0, g1, g2, n_cars)
+                        if loss_res > max_loss:
+                            max_loss = loss_res
+                            best_dists = [g0, g1, g2]
+            X.loc[len(X)] = n_cars
+            Y.loc[len(Y)] = best_dists
+
+        self._fit_(X, Y, n_estimators, max_depth)
         
-        self.reg = GradientBoostingRegressor(n_estimators=n_estimators, max_depth=max_depth)
-        self.reg.fit(X, y)
-        self.hasFit = True
-        # return self.regы
 
     def predict(self, n_cars:int | np.ndarray) -> float | np.ndarray:
         """
@@ -85,7 +104,7 @@ class OptimalLoss_Q():
         self.grid_params= grid_params
 
 
-    def fit(self, loss_func: callable,
+    def fit(self, func: callable,
             alpha: float = 0.1,  # шаг обучения (learning rate)
             gamma: float = 0.9,  # дисконт-фактор
             epsilon: float=0.1,  # эпсилон для epsilon-greedy стратегии
@@ -93,7 +112,7 @@ class OptimalLoss_Q():
             num_episodes: int = 1000,  # количество эпох
             showInfo: bool = False  # покзаывает результаты обучения после каждой эпохи
     ):
-        self.loss_func = loss_func
+        self.reword_func = func
 
         # Инициализация Q-таблицы
         self.action_values = np.arange(*self.grid_params[0])  # возможные действия (дистанция)
@@ -124,7 +143,7 @@ class OptimalLoss_Q():
                 # Выполнение действия
                 x = self.action_values[action]
                 y = self.state_values[state]
-                reward = -self.loss_func(x, y)  # награда -значение функции потерь
+                reward = self.reword_func(x, y)  # награда -значение функции потерь
                 
                 # Вычисление нового состояния
                 new_state = get_new_state(state, action)  # формируем новое значение n
@@ -162,11 +181,66 @@ class OptimalLoss_Q():
         for state, w in inds:
             pred += np.argmax(self.Q[state, :]) * w
         return pred
+    
+
+class OptimalNN():
+    def __init__(self, min_N: int|float, max_N: int|float) -> None:
+        self.min_N = min_N
+        self.max_N = max_N
+
+
+    @tf.function
+    def _train_step_(self, n):
+        """
+        Обновляет параметры модели
+        """
+        with tf.GradientTape() as tape:
+            predictions = self.model(n)
+            g0, g1, g2 = tf.unstack(predictions, axis=1)
+            loss = -(self.func(n, g0, g1, g2))  # Минимизируем отрицание функции  TODO:убрать костыль с numpy()[0]
+        gradients = tape.gradient(loss, self.model.trainable_variables)
+        self.optimizer.apply_gradients(zip(gradients, self.model.trainable_variables))
+
+
+    def fit(self, func: callable, n_iterations: int = 1000, n_hidden_layers: int = 2) -> None:
+        self.func = func
+        # Создаем модель нейронной сети
+        n_neurons = 64
+        activation_func = 'relu'
+        self.model = tf.keras.Sequential()
+        self.model.add(tf.keras.layers.Input(shape=(1,)))
+        for _ in range(n_hidden_layers):
+            self.model.add(tf.keras.layers.Dense(n_neurons, activation=activation_func))
+        self.model.add(tf.keras.layers.Dense(3))
+
+        # self.model = tf.keras.Sequential([
+        #     tf.keras.layers.Dense(64, activation='relu', input_shape=(1,)),
+        #     tf.keras.layers.Dense(64, activation='relu'),
+        #     tf.keras.layers.Dense(2)  # Два выходных нейрона для g1 и g2
+        # ])
+
+        # Оптимизатор
+        self.optimizer = tf.keras.optimizers.Adam()
+            
+        # for n in np.random.random_integers(self.min_N, self.max_N, n_iterations):
+        #     self._train_step_(n)
+        for _ in range(n_iterations):
+            n = tf.round(tf.random.uniform((1,), minval=self.min_N, maxval=self.max_N, dtype=tf.float32, seed=13))
+            self._train_step_(n)
+
+
+    def predict(self, n: int) -> list:
+        """
+        Получаем оптимальные значения g1 и g2
+        """
+        tf_n = tf.constant([[n]])
+        pred = list(map(lambda x: x.numpy()[0], tf.unstack(self.model(tf_n), axis=1)))
+        return pred
 
 
 
 def some_loss(dist, n):
-    return (dist - n)**2 + 1.0
+    return -(dist - n)**2 + 1.0
 
 if __name__ == '__main__':
     print('main() from Model.py')
