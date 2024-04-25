@@ -177,12 +177,12 @@ class Simulation:
             output=['statistic']
         )
 
-    def run(self):
+    def run(self, seed=None):
         """
         Metod to run the simulation
         """
         self.generate_config()
-        loadConfig(os.path.join(self.work_dir, self.configfile))
+        loadConfig(os.path.join(self.work_dir, self.configfile), seed=seed)
 
     def get_simtime(self):
         """
