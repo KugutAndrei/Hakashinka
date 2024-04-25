@@ -188,6 +188,7 @@ class OptimalNN():
     def __init__(self, min_N: int|float, max_N: int|float) -> None:
         self.min_N = min_N
         self.max_N = max_N
+        self.throughtput = Throughput()
 
 
     @tf.function
@@ -197,8 +198,16 @@ class OptimalNN():
         """
         with tf.GradientTape() as tape:
             predictions = self.model(n)
-            g0, g1, g2 = tf.unstack(predictions, axis=1)
-            loss = -(self.func(n, g0, g1, g2))  # Минимизируем отрицание функции  TODO:убрать костыль с numpy()[0]
+            print(predictions[0])
+            val = tf.concat([predictions[0], n], axis=0)
+            print(val)
+            val = tf.expand_dims(val, axis=0) 
+            # g0, g1, g2 = tf.unstack(predictions, axis=1)
+            # val = tf.constant([g0[0][0], g1[0][0], g2[0][0], n[0][0]], shape=(1, 4))
+            loss = -self.throughtput.model(val)
+            print(loss)
+    
+            # loss = -(self.func(n, g0, g1, g2))  # Минимизируем отрицание функции  TODO:убрать костыль с numpy()[0]
         gradients = tape.gradient(loss, self.model.trainable_variables)
         self.optimizer.apply_gradients(zip(gradients, self.model.trainable_variables))
 
@@ -225,6 +234,7 @@ class OptimalNN():
             
         # for n in np.random.random_integers(self.min_N, self.max_N, n_iterations):
         #     self._train_step_(n)
+        self.throughtput.fit('csv_data/test6.csv',test_size=0.7, n_epochs=2)
         for _ in range(n_iterations):
             n = tf.round(tf.random.uniform((1,), minval=self.min_N, maxval=self.max_N, dtype=tf.float32, seed=13))
             self._train_step_(n)
