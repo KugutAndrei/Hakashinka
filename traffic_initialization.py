@@ -4,6 +4,7 @@ import sys
 import subprocess
 from xml.etree.ElementTree import Element, SubElement, ElementTree, tostring, XML, Comment, indent
 import xml.etree.ElementTree as ET
+import time
 
 flag = (os.name=='posix')
 
@@ -13,9 +14,11 @@ def loadNet(filename):
 def loadRoute(filename):
     os.system(f'sumo -r {filename}')
     
-def loadConfig(filename, shell=False):
+def loadConfig(filename, seed=None, shell=False):
+    if seed is None:
+        seed = int(time.time())
     sumo_process = subprocess.run(
-        ['sumo', '-c', filename, '--no-step-log', '-W', '--duration-log.disable', '--random'],
+        ['sumo', '-c', filename, '--no-step-log', '-W', '--duration-log.disable', '--seed', str(seed)],
         check=False,
         shell=shell
     )
