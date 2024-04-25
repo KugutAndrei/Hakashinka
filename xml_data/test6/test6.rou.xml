@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/routes_file.xsd">
 	<!--VTypes-->
-	<vType id="default" accel="3.0" decel="6.0" length="4.0" minGap="3" maxSpeed="20" sigma="0.7" />
+	<vType id="default" accel="3.0" decel="6.0" length="4.0" minGap="4" maxSpeed="20" sigma="0.7" />
 	<!--Flows-->
-	<flow id="default" from="E0" type="default" to="E2" begin="0" end="100" number="5000" departSpeed="13.0" arrivalSpeed="13.0" departLane="random" arrivalLane="current" />
+	<flow id="default" from="E0" type="default" to="E2" begin="0" end="100" number="8000" departSpeed="13.0" arrivalSpeed="13.0" departLane="random" arrivalLane="current" />
 </routes>

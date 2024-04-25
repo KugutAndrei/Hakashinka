@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2024-04-25 19:12:39 by Eclipse SUMO sumo Version 1.19.0
+<!-- generated on 2024-04-25 20:48:23 by Eclipse SUMO sumo Version 1.19.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="./xml_data/threading/thread0/test6.net.xml"/>
-        <route-files value="./xml_data/threading/thread0/test6.rou.xml"/>
-        <additional-files value="./xml_data/threading/thread0/test6.add.xml"/>
+        <net-file value="./xml_data/threading/thread0\test6.net.xml"/>
+        <route-files value="./xml_data/threading/thread0\test6.rou.xml"/>
+        <additional-files value="./xml_data/threading/thread0\test6.add.xml"/>
     </input>
 
     <output>
-        <statistic-output value="./xml_data/threading/thread0/test6.statistic.output.xml"/>
+        <statistic-output value="./xml_data/threading/thread0\test6.statistic.output.xml"/>
     </output>
 
     <report>
@@ -20,17 +20,17 @@
     </report>
 
     <random_number>
-        <seed value="-1016175485"/>
+        <seed value="-447939023"/>
     </random_number>
 
 </configuration>
 -->
 
 <statistics xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/statistic_file.xsd">
-    <performance clockBegin="1714061559.16" clockEnd="1714061562.88" clockDuration="3.72" traciDuration="0.00" realTimeFactor="1121.24" vehicleUpdatesPerSecond="0.00" personUpdatesPerSecond="0.00" begin="0.00" end="4171.00" duration="4171.00"/>
-    <vehicles loaded="5050" inserted="5050" running="0" waiting="0"/>
-    <teleports total="1154" jam="0" yield="0" wrongLane="0"/>
-    <safety collisions="1154" emergencyStops="0" emergencyBraking="56"/>
+    <performance clockBegin="851512.27" clockEnd="851512.31" clockDuration="0.05" traciDuration="0.00" realTimeFactor="2829.79" vehicleUpdatesPerSecond="0.00" personUpdatesPerSecond="0.00" begin="0.00" end="133.00" duration="133.00"/>
+    <vehicles loaded="29" inserted="29" running="0" waiting="0"/>
+    <teleports total="19" jam="0" yield="0" wrongLane="0"/>
+    <safety collisions="19" emergencyStops="0" emergencyBraking="1"/>
     <persons loaded="0" running="0" jammed="0"/>
     <personTeleports total="0" abortWait="0" wrongDest="0"/>
 </statistics>
