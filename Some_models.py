@@ -1,6 +1,8 @@
 # from abc import ABC, abstractmethod
+from collections.abc import Iterable
 import numpy as np
 import pandas as pd
+from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.multioutput import MultiOutputRegressor
@@ -49,15 +51,23 @@ class OptimalDist():
     
     def _fit_(self, X:pd.DataFrame, Y:pd.DataFrame, n_estimators:int, max_depth:int):
         self.reg = MultiOutputRegressor(GradientBoostingRegressor(n_estimators=n_estimators, max_depth=max_depth))
-        self.reg.fit(X, Y)
+        self.reg.fit(X.values, Y)
         self.hasFit = True
         
 
-    def fit_data(self, data_name:str, n_estimators:int=100, max_depth:int=3) -> None:
+    def fit_data(self, data_name:str, n_estimators:int=100, max_depth:int=3, test_size:float = 0.8, seed:int = 13) -> None:
         data = pd.read_csv(data_name)
         X = data[self.feature]
         Y = data[self.target]
-        self._fit_(X, Y, n_estimators, max_depth)
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_size, random_state=seed)
+        
+        self._fit_(X_train, Y_train, n_estimators, max_depth)
+        
+        mse_train = mean_squared_error(Y_train, self.reg.predict(X_train.values))
+        mse_test = mean_squared_error(Y_test, self.reg.predict(X_test.values))
+        
+        print("MSE на обучающих данных:", mse_train)
+        print("MSE на тестовых данных:", mse_test)
 
 
 
@@ -188,7 +198,6 @@ class OptimalNN():
     def __init__(self, min_N: int|float, max_N: int|float) -> None:
         self.min_N = min_N
         self.max_N = max_N
-        self.throughtput = Throughput()
 
 
     @tf.function
@@ -198,16 +207,8 @@ class OptimalNN():
         """
         with tf.GradientTape() as tape:
             predictions = self.model(n)
-            print(predictions[0])
-            val = tf.concat([predictions[0], n], axis=0)
-            print(val)
-            val = tf.expand_dims(val, axis=0) 
-            # g0, g1, g2 = tf.unstack(predictions, axis=1)
-            # val = tf.constant([g0[0][0], g1[0][0], g2[0][0], n[0][0]], shape=(1, 4))
-            loss = -self.throughtput.model(val)
-            print(loss)
-    
-            # loss = -(self.func(n, g0, g1, g2))  # Минимизируем отрицание функции  TODO:убрать костыль с numpy()[0]
+            g0, g1, g2 = tf.unstack(predictions, axis=1)
+            loss = -(self.func(n, g0, g1, g2))  # Минимизируем отрицание функции  TODO:убрать костыль с numpy()[0]
         gradients = tape.gradient(loss, self.model.trainable_variables)
         self.optimizer.apply_gradients(zip(gradients, self.model.trainable_variables))
 
@@ -234,7 +235,6 @@ class OptimalNN():
             
         # for n in np.random.random_integers(self.min_N, self.max_N, n_iterations):
         #     self._train_step_(n)
-        self.throughtput.fit('csv_data/test6.csv',test_size=0.7, n_epochs=2)
         for _ in range(n_iterations):
             n = tf.round(tf.random.uniform((1,), minval=self.min_N, maxval=self.max_N, dtype=tf.float32, seed=13))
             self._train_step_(n)
@@ -254,10 +254,11 @@ class SimpleNN():
         self.target = ['d0', 'd1', 'd2']
         self.feature = ['N']
 
-    def fit(self, data_filename:str, n_hidden_layers: int = 2, n_epochs: int = 10) -> None:
+    def fit(self, data_filename:str, n_hidden_layers: int = 2, n_epochs: int = 10, test_size:float = 0.8, seed:int = 13) -> None:
         data = pd.read_csv(data_filename)
         X = data[self.feature]
         Y = data[self.target]
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=test_size, random_state=seed)
 
         n_neurons = 64
         activation_func = 'relu'
@@ -268,11 +269,20 @@ class SimpleNN():
         self.model.add(tf.keras.layers.Dense(3))
 
         self.model.compile(optimizer='adam', loss='mse')
-        self.model.fit(X, Y, epochs=n_epochs)
+        self.model.fit(X_train, Y_train, epochs=n_epochs)
+        
+        mse_train = self.model.evaluate(X_train, Y_train)
+        mse_test = self.model.evaluate(X_test, Y_test)
+        print("MSE на обучающих данных:", mse_train)
+        print("MSE на тестовых данных:", mse_test)
 
-    def predict(self, x:int|float|list|np.ndarray):
-        val = tf.constant(x, dtype=tf.float32, shape=(len(x),))
-        return self.model.predict(val)
+    def predict(self, x:int|float|list|np.ndarray, showProgressBar=False):
+        if isinstance(x, Iterable):
+            val = tf.constant(x, dtype=tf.float32, shape=(len(x),))
+        else:
+            val = tf.constant(x, dtype=tf.float32, shape= (1,))
+        verbose = 1 if showProgressBar else 0
+        return self.model.predict(val, verbose=verbose)
 
 
 class Throughput():
@@ -280,12 +290,30 @@ class Throughput():
         self.input = ['d0', 'd1', 'd2', 'N']
         self.output = ['throughput']
 
-    def fit(self, data_filename:str, n_epochs:int = 10, test_size:float = 0.8, seed:int = 13) -> None:
+    def fit(self, data_filename:str, n_epochs:int = 10, test_size:float = 0.8, split_seed:int = 13, nn_seed:int = 13) -> None:
         data = pd.read_csv(data_filename)
         input = data[self.input]
         output = data[self.output]
-        in_train, in_test, out_train, out_test = train_test_split(input, output, test_size=test_size, random_state=seed)
+        in_train, in_test, out_train, out_test = train_test_split(input, output, test_size=test_size, random_state=split_seed)
 
+        tf.random.set_seed(nn_seed)
+        # Один вход для всех четырех значений
+        input_full = tf.keras.layers.Input(shape=(4,), name='input_full')
+        # Разделение входа на три и один
+        input1 = tf.keras.layers.Lambda(lambda x: x[:, :3], output_shape=(3,))(input_full)  # Первые три значения
+        input2 = tf.keras.layers.Lambda(lambda x: x[:, 3:], output_shape=(1,))(input_full)  # Последнее значение
+        # Скрытые слои для первого входа
+        hidden1 = tf.keras.layers.Dense(30, activation='relu')(input1)
+        hidden2 = tf.keras.layers.Dense(30, activation='relu')(hidden1)
+        # Объединение второго входа с результатом обработки первого входа
+        merged = tf.keras.layers.concatenate([hidden2, input2])
+        # Общие скрытые слои
+        shared_hidden1 = tf.keras.layers.Dense(30, activation='relu')(merged)
+        shared_hidden2 = tf.keras.layers.Dense(30, activation='relu')(shared_hidden1)
+        # Выходной слой
+        output = tf.keras.layers.Dense(1)(shared_hidden2)
+        # Создание модели
+        self.model = tf.keras.models.Model(inputs=input_full, outputs=output)
         # Один вход для всех четырех значений
         input_full = tf.keras.layers.Input(shape=(4,), name='input_full')
         # Разделение входа на три и один
@@ -307,16 +335,18 @@ class Throughput():
         self.model.compile(optimizer='adam', loss='mse')
 
         # Обучение модели
-        self.model.fit(in_train, out_train, epochs=n_epochs)
+        self.model.fit(in_train, out_train, epochs=n_epochs, verbose=0)
 
         mse_train = self.model.evaluate(in_train, out_train)
         mse_test = self.model.evaluate(in_test, out_test)
         print("MSE на обучающих данных:", mse_train)
         print("MSE на тестовых данных:", mse_test)
 
-    def predict(self, x:list) -> float:
+    def predict(self, d0, d1, d2, N) -> float:
+
+        x = [d0, d1, d2, N]
         val = tf.constant(x, dtype=tf.float32, shape=(1,4))
-        return self.model.predict(val)[0]
+        return self.model.predict(val)[0][0]
 
 
 

@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<additional xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/additional_file.xsd">
+	<!--VTypes-->
+	<vType id="vtype_gap_4_speed_30" accel="3.0" decel="6.0" length="4.0" minGap="4" maxSpeed="30" sigma="0.7" />
+	<!--Calibrators-->
+	<calibrator id="calib_gap_4_speed_30_road_E1_lane0" edge="E1" pos="0" lane="E1_0">
+		<flow begin="0" end="999999" type="vtype_gap_4_speed_30" />
+	</calibrator>
+	<calibrator id="calib_gap_4_speed_30_road_E1_lane1" edge="E1" pos="0" lane="E1_1">
+		<flow begin="0" end="999999" type="vtype_gap_4_speed_30" />
+	</calibrator>
+</additional>
