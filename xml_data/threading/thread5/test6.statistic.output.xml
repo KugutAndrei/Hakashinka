@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2024-04-27 00:00:59 by Eclipse SUMO sumo Version 1.19.0
+<!-- generated on 2024-04-27 00:12:43 by Eclipse SUMO sumo Version 1.19.0
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
@@ -20,17 +20,17 @@
     </report>
 
     <random_number>
-        <seed value="-108565296"/>
+        <seed value="1018661418"/>
     </random_number>
 
 </configuration>
 -->
 
 <statistics xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/statistic_file.xsd">
-    <performance clockBegin="1714165259.55" clockEnd="1714165259.57" clockDuration="0.03" traciDuration="0.00" realTimeFactor="7357.14" vehicleUpdatesPerSecond="0.00" personUpdatesPerSecond="0.00" begin="0.00" end="206.00" duration="206.00"/>
-    <vehicles loaded="100" inserted="100" running="0" waiting="0"/>
-    <teleports total="0" jam="0" yield="0" wrongLane="0"/>
-    <safety collisions="0" emergencyStops="0" emergencyBraking="0"/>
+    <performance clockBegin="1714165963.29" clockEnd="1714165964.43" clockDuration="1.14" traciDuration="0.00" realTimeFactor="992.13" vehicleUpdatesPerSecond="0.00" personUpdatesPerSecond="0.00" begin="0.00" end="1134.00" duration="1134.00"/>
+    <vehicles loaded="4100" inserted="1590" running="75" waiting="2510"/>
+    <teleports total="601" jam="0" yield="0" wrongLane="0"/>
+    <safety collisions="601" emergencyStops="0" emergencyBraking="8"/>
     <persons loaded="0" running="0" jammed="0"/>
     <personTeleports total="0" abortWait="0" wrongDest="0"/>
 </statistics>
