@@ -295,25 +295,7 @@ class Throughput():
         input = data[self.input]
         output = data[self.output]
         in_train, in_test, out_train, out_test = train_test_split(input, output, test_size=test_size, random_state=split_seed)
-
         tf.random.set_seed(nn_seed)
-        # Один вход для всех четырех значений
-        input_full = tf.keras.layers.Input(shape=(4,), name='input_full')
-        # Разделение входа на три и один
-        input1 = tf.keras.layers.Lambda(lambda x: x[:, :3], output_shape=(3,))(input_full)  # Первые три значения
-        input2 = tf.keras.layers.Lambda(lambda x: x[:, 3:], output_shape=(1,))(input_full)  # Последнее значение
-        # Скрытые слои для первого входа
-        hidden1 = tf.keras.layers.Dense(30, activation='relu')(input1)
-        hidden2 = tf.keras.layers.Dense(30, activation='relu')(hidden1)
-        # Объединение второго входа с результатом обработки первого входа
-        merged = tf.keras.layers.concatenate([hidden2, input2])
-        # Общие скрытые слои
-        shared_hidden1 = tf.keras.layers.Dense(30, activation='relu')(merged)
-        shared_hidden2 = tf.keras.layers.Dense(30, activation='relu')(shared_hidden1)
-        # Выходной слой
-        output = tf.keras.layers.Dense(1)(shared_hidden2)
-        # Создание модели
-        self.model = tf.keras.models.Model(inputs=input_full, outputs=output)
         # Один вход для всех четырех значений
         input_full = tf.keras.layers.Input(shape=(4,), name='input_full')
         # Разделение входа на три и один
